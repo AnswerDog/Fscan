@@ -40,7 +40,6 @@ class ThreadNum(threading.Thread):
                         queue.put(":".join(['discern',task_host,task_port]))
                 elif task_type == 'discern':
                     discern_type = scan_discern(task_type,task_host,task_port)
-                    print discern_type
                     if discern_type:
                         queue.put(":".join([discern_type,task_host,task_port]))
                 else:
@@ -93,7 +92,6 @@ def read_config(config_type):
         return plugin_list
         
 def scan_discern(scan_type,host,port):
-    print "test scan"
     mark_list = read_config('discern')
     for mark_info in mark_list:
         if mark_info[1] == 'port':
@@ -124,7 +122,6 @@ def scan_discern(scan_type,host,port):
                 return mark_info[0]
 def scan_vul(scan_type,host,port):
     vul_plugin = read_config("plugin")
-    print vul_plugin
     for plugin_name in vul_plugin[scan_type]:
         try:
             req = __import__(plugin_name)
@@ -228,7 +225,7 @@ Usage: python F-MiddlewareScan.py -h 192.168.1 [-p 7001,8080] [-m 50] [-t 10]
             put_queue(ip_list,port_list)
             for i in range(m_count):
                 t = ThreadNum(queue)
-                t.setDaemon(True)
+                t.setDaemon(False)
                 t.start()
             t_join(m_count)
     except Exception,e:

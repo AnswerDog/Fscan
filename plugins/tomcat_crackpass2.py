@@ -55,5 +55,3 @@ def check(ip,port,time):
     else:
         return 'NO'
 
-
-

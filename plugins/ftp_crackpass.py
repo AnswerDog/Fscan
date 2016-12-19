@@ -31,7 +31,6 @@ def check(host,port,time):
                 if ftp_connect(host,username,password,int(port))==1:
                     print("%s ftp at %s has weaken password!!-------%s:%s\r\n" %(host,port,username,password))
                     results.append("%s ftp at %s has weaken password!!-------%s:%s\r\n" %(host,port,username,password))
-                    break
                 data=d.readline().strip('\r\n')
         except Exception,e:
             print e
@@ -42,9 +41,12 @@ def check(host,port,time):
             return 'NO'
 
 
-
 '''if __name__=="__main__":
-    for i in range(100):
-        t = threading.Thread(target=check('67.225.139.176',21,10), name=str(i))
-        t.setDaemon(True)
-        t.start()'''
+    threads =[]
+    for i in range(255):#创建但不开始执行线程
+        t=threading.Thread(target=check,args=('67.225.139.'+str(i),21,10))
+        threads.append(t)
+    for i in range(250):#开始
+        threads[i].start()
+    for i in range(255):#让主线程等待
+        threads[i].join()'''

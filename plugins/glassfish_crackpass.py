@@ -15,7 +15,7 @@ def check(host,port,timeout):
                 res = urllib2.urlopen(request,timeout=timeout)
                 res_html = res.read()
             except urllib2.HTTPError,e:
-                return 'NO'
+                continue
             except urllib2.URLError,e:
                 error_i+=1
                 if error_i >= 3:

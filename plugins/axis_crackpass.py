@@ -11,7 +11,7 @@ def check(host,port,timeout):
         for password in pass_list:
             try:
                 login_url = url+'/axis2/axis2-admin/login'
-                print login_url
+                print user+":"+password
                 PostStr='userName=%s&password=%s&submit=+Login+'%(user,password)
                 request = urllib2.Request(login_url,PostStr)
                 res = urllib2.urlopen(request,timeout=timeout)

