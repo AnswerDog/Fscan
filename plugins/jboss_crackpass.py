@@ -4,7 +4,7 @@ import base64
 import re
 import urllib
 import urllib2
-def check(host,port,timeout):
+def check(host, port, timeout):
     url = "http://%s:%d"%(host,int(port))
     error_i = 0
     flag_list=['>jboss.j2ee</a>','JBoss JMX Management Console','HtmlAdaptor?action=displayMBeans','<title>JBoss Management']
@@ -37,10 +37,10 @@ def check(host,port,timeout):
                 if flag in res_html:
                     info='%s Jboss Weak password %s:%s'%(login_url,user,password)
                     #login_cookie = res.headers['Set-Cookie']
-                    deploy = __import__("jboss_deploy")
-                    re = deploy.run(host,port,timeout,'Basic '+auth_str)
-                    if re:
-                        info += re
+                    #deploy = __import__("jboss_deploy")
+                    #re = deploy.run(host,port,timeout,'Basic '+auth_str)
+                    #if re:
+                        #info += re
                     return 'YES|'+info
     for user in user_list:
         for password in pass_list:
@@ -67,11 +67,12 @@ def check(host,port,timeout):
             for flag in flag_list:
                 if flag in res_html:
                     info='%s Jboss Weak password %s:%s'%(login_url,user,password)
-                    deploy = __import__("jboss_deploy")
-                    re = deploy.run(host,port,timeout,'Basic '+auth_str)
-                    if re:
-                        info += re
+                    #deploy = __import__("jboss_deploy")
+                    #re = deploy.run(host,port,timeout,'Basic '+auth_str)
+                    #if re:
+                        #info += re
                     return 'YES|'+info
+
     for user in user_list:
         for password in pass_list:
             try:

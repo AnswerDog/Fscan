@@ -54,4 +54,3 @@ def check(ip,port):
         else:
             return 'NO'
 
-check('89.237.38.66',27017)

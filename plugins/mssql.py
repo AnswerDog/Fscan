@@ -17,13 +17,12 @@ def mssql_connect(ip,username,password,port):
             crack=1
         db.close()
     except Exception, e:
-        lock.acquire()
         print "%s sql service 's %s:%s login fail " %(ip,username,password)
-        lock.release()
     return crack
 
 
-def mssq1(ip,port):
+def check(ip,port):
+        results = []
         try:
             d=open('conf/mssql.conf','r')
             data=d.readline().strip('\r\n')
@@ -31,38 +30,15 @@ def mssq1(ip,port):
                 username=data.split(':')[0]
                 password=data.split(':')[1]
                 flag=mssql_connect(ip,username,password,port)
-                if flag==2:
-                    break
-
                 if flag==1:
-                    lock.acquire()
-                    printGreen("%s mssql at %s has weaken password!!-------%s:%s\r\n" %(ip,port,username,password))
-                    result.append("%s mssql at %s has weaken password!!-------%s:%s\r\n" %(ip,port,username,password))
-                    lock.release()
-                    break
+                    print("%s mssql at %s has weaken password!!-------%s:%s\r\n" %(ip,port,username,password))
+                    results.append("%s mssql at %s has weaken password!!-------%s:%s\r\n" %(ip,port,username,password))
 
                 data=d.readline().strip('\r\n')
         except Exception,e:
             print e
             pass
-
-
-def mssql_main(ipdict,threads):
-    printPink("crack sql serice  now...")
-    print "[*] start crack sql serice  %s" % time.ctime()
-    starttime=time.time()
-    pool=Pool(threads)
-    global lock
-    lock = threading.Lock()
-    global result
-    result=[]
-
-    for ip in ipdict['mssql']:
-        pool.apply_async(func=mssq1,args=(str(ip).split(':')[0],int(str(ip).split(':')[1])))
-
-    pool.close()
-    pool.join()
-
-    print "[*] stop crack sql serice  %s" % time.ctime()
-    print "[*] crack sql serice  done,it has Elapsed time:%s " % (time.time()-starttime)
-    return result
+        if len(results) > 0:
+            return 'YES|'+results
+        else:
+            return 'NO'

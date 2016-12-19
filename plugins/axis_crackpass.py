@@ -26,14 +26,14 @@ def check(host,port,timeout):
             for flag in flag_list:
                 if flag in res_html:
                     info = '%s Axis Weak password %s:%s'%(login_url,user,password)
-                    try:
-                        login_cookie = res.headers['Set-Cookie']
-                        deploy = __import__("axis_deploy")
-                        re = deploy.run(host,port,timeout,login_cookie)
-                        if re:
-                            info += re
-                    except Exception,e:
-                        print e
-                        pass
+                    #try:
+                    #    login_cookie = res.headers['Set-Cookie']
+                        #deploy = __import__("axis_deploy")
+                        #re = deploy.run(host,port,timeout,login_cookie)
+                        #if re:
+                            #info += re
+                    #except Exception,e:
+                    #    print e
+                    #    pass
                     return 'YES|'+info
     return 'NO'
