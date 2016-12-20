@@ -24,7 +24,7 @@ def mysql_connect(ip,username,password,port):
 def check(ip,port,time):
         results =[]
         try:
-            d=open('conf/mysql.conf','r')
+            d=open('plugins/conf/mysql.conf','r')
             data=d.readline().strip('\r\n')
             while(data):
                 username=data.split(':')[0]
@@ -39,5 +39,8 @@ def check(ip,port,time):
         except Exception,e:
             print e
             pass
+        if len(results) > 0:
+            return 'YES|'+results
+        else:
+            return 'NO'
 
-check('120.24.165.142',3306,10)

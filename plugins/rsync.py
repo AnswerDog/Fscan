@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import threading
 import socket
-from printers import printPink,printRed,printGreen
+
 from multiprocessing.dummy import Pool
 socket.setdefaulttimeout(10)
 import re
@@ -229,10 +229,7 @@ def rsync_connect(ip,username,password,port):
 
         if len(modules)!=0:
             for modulename in modules:
-                lock.acquire()
                 print "find %s module in %s at %s" %(modulename,ip,port)
-                lock.release()
-
                 rs = rsync(ip)
                 res = rs.login(module=modulename,user=username,passwd=password)
                 if re.findall('.*OK.*',res):
@@ -250,9 +247,10 @@ def rsync_connect(ip,username,password,port):
     return creak
 
 
-def rsync_creak(ip,port):
+def check(ip,port,time):
+        results = []
         try:
-            d=open('conf/rsync.conf','r')
+            d=open('plugins/conf/rsync.conf','r')
             data=d.readline().strip('\r\n')
             while(data):
                 username=data.split(':')[0]
@@ -260,50 +258,24 @@ def rsync_creak(ip,port):
                 flag=rsync_connect(ip,username,password,port)
 
                 if flag==3:
-                    lock.acquire()
-                    printRed("fail!!bacaues can't find any module\r\n")
-                    lock.release()
+                    print("fail!!bacaues can't find any module\r\n")
                     break
 
                 if flag==2:
-                    lock.acquire()
-                    printRed("fail!!bacaues modulename is error\r\n")
-                    lock.release()
+                    print("fail!!bacaues modulename is error\r\n")
                     break
 
                 if flag==1:
-                    lock.acquire()
-                    printGreen("%s rsync at %s has weaken password!!-------%s:%s\r\n" %(ip,port,username,password))
-                    result.append("%s rsync at %s has weaken password!!-------%s:%s\r\n" %(ip,port,username,password))
-                    lock.release()
+                    print("%s rsync at %s has weaken password!!-------%s:%s\r\n" %(ip,port,username,password))
+                    results.append("%s rsync at %s has weaken password!!-------%s:%s\r\n" %(ip,port,username,password))
                     break
                 else:
-                    lock.acquire()
                     print "%s rsync service 's %s:%s login fail " %(ip,username,password)
-                    lock.release()
                 data=d.readline().strip('\r\n')
         except Exception,e:
             print e
-
-
-def rsync_main(ipdict,threads):
-    printPink("crack rsync  now...")
-    print "[*] start crack rsync  %s" % time.ctime()
-    starttime=time.time()
-
-    global lock
-    lock = threading.Lock()
-    global result
-    result=[]
-
-    pool=Pool(threads)
-
-    for ip in ipdict['rsync']:
-        pool.apply_async(func=rsync_creak,args=(str(ip).split(':')[0],int(str(ip).split(':')[1])))
-    pool.close()
-    pool.join()
-
-    print "[*] stop rsync serice  %s" % time.ctime()
-    print "[*] crack rsync done,it has Elapsed time:%s " % (time.time()-starttime)
-    return result
-
+            pass
+        if len(results) > 0:
+            return 'YES|'+results
+        else:
+            return 'NO'

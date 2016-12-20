@@ -43,7 +43,7 @@ def check(ip,port,time):
             password=data.split(':')[1]
             flag=tomcat_connect(ip,port,username,password)
             if flag==1:
-                resluts.append(data)
+                resluts.append(ip+':'+int(port)+'------'+data)
             if flag==2:
                 break
             data=d.readline().strip('\r\n')

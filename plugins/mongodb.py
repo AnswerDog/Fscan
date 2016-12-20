@@ -36,7 +36,7 @@ def mongoDB_connect(ip,username,password,port):
 
 def check(ip,port):
         try:
-            d=open('conf/mongodb.conf','r')
+            d=open('plugins/conf/mongodb.conf','r')
             data=d.readline().strip('\r\n')
             while(data):
                 username=data.split(':')[0]
@@ -44,7 +44,8 @@ def check(ip,port):
                 flag=mongoDB_connect(ip,username,password,port)
                 if flag==2:
                     print("%s mongoDB at %s has weaken password!!-------%s:%s\r\n" %(ip,port,username,password))
-                    results.append(data)
+                    _ = "%s mongoDB at %s has weaken password!!-------%s:%s\r\n" %(ip,port,username,password)
+                    results.append(_)
                 data=d.readline().strip('\r\n')
         except Exception,e:
             print e

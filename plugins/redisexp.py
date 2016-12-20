@@ -10,7 +10,7 @@ def check(ip,port,timeout):
             r=redis.Redis(host=ip,port=port,db=0,socket_timeout=timeout)
             r.dbsize()
             print "ok"
-            return 'YES|'+'redis vul'
+            return 'YES|'+'redis vul'+ip
         except Exception,e:
             print e
             pass
